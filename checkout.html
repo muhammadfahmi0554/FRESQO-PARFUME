@@ -1,0 +1,285 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Fresqo</title>
+
+    <style>
+      
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #101512;
+    color: #f5f3ed;
+    min-height: 100vh;
+}
+
+/* HEADER */
+
+.checkout-header {
+    background: #151c18;
+    border-bottom: 1px solid #29362f;
+    padding: 22px 12%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 28px;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+.logo span {
+    color: #80b29d;
+}
+
+.checkout-header a {
+    color: #80b29d;
+    text-decoration: none;
+}
+
+/* MAIN CONTAINER */
+
+.checkout-container {
+    max-width: 650px;
+    margin: 65px auto;
+    padding: 40px;
+    background: #171f1a;
+    border: 1px solid #34443a;
+    border-radius: 12px;
+    box-shadow: 0 15px 45px rgba(0,0,0,0.3);
+}
+
+.checkout-container h1 {
+    font-size: 32px;
+    text-align: center;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+}
+
+.checkout-container > p {
+    text-align: center;
+    color: #a6b4a9;
+    margin-bottom: 35px;
+}
+
+/* FORM */
+
+.checkout-container label {
+    display: block;
+    margin-top: 20px;
+    margin-bottom: 9px;
+    color: #a7c5b4;
+    font-size: 14px;
+}
+
+.checkout-container input {
+    width: 100%;
+    padding: 14px;
+    background: #101713;
+    border: 1px solid #3b4c40;
+    border-radius: 6px;
+    color: white;
+    outline: none;
+}
+
+.checkout-container input:focus {
+    border-color: #80b29d;
+}
+
+/* ORDER SUMMARY */
+
+.summary {
+    background: #101713;
+    border: 1px solid #34443a;
+    padding: 25px;
+    margin-top: 30px;
+    border-radius: 9px;
+}
+
+.summary h3 {
+    color: #80b29d;
+    margin-bottom: 18px;
+}
+
+.summary p {
+    margin: 14px 0;
+    color: #d6ddd6;
+}
+
+.summary strong {
+    color: #f4f0e6;
+}
+
+.summary h3:last-child {
+    border-top: 1px solid #34443a;
+    padding-top: 20px;
+    margin-top: 20px;
+    font-size: 22px;
+    color: #80b29d;
+}
+
+/* BUTTON */
+
+.checkout-container button {
+    width: 100%;
+    padding: 16px;
+    margin-top: 25px;
+    background: #286653;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.checkout-container button:hover {
+    background: #80b29d;
+    color: #101512;
+}
+
+/* SUCCESS MESSAGE */
+
+#successMessage {
+    text-align: center;
+    padding: 30px 0;
+}
+
+#successMessage h2 {
+    color: #80b29d;
+    margin-bottom: 15px;
+}
+
+/* BACK LINK */
+
+.back {
+    display: block;
+    text-align: center;
+    margin-top: 25px;
+    color: #80b29d;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.back:hover {
+    color: white;
+}
+
+/* MOBILE */
+
+@media (max-width: 600px) {
+    .checkout-header {
+        padding: 20px;
+    }
+
+    .checkout-container {
+        margin: 30px 15px;
+        padding: 25px 20px;
+    }
+
+    .checkout-container h1 {
+        font-size: 25px;
+    }
+}
+
+
+
+        
+    </style>
+</head>
+
+<body>
+
+<div class="checkout-container">
+
+    <h1>FRESQO CHECKOUT</h1>
+    <p>Silakan lengkapi data pemesanan Anda.</p>
+
+    <form id="checkoutForm">
+
+        <label>Nama Pembeli</label>
+        <input type="text" id="customerName" required>
+
+        <label>Nomor WhatsApp</label>
+        <input type="tel" id="customerPhone" required>
+
+        <div class="summary">
+            <h3>Ringkasan Pesanan</h3>
+
+            <p>Produk: <strong id="productName"></strong></p>
+            <p>Varian: <strong id="productVariant"></strong></p>
+
+            <label>Jumlah</label>
+            <input type="number" id="quantity"
+                   value="1" min="1" required>
+
+            <p>Harga: <strong id="unitPrice"></strong></p>
+
+            <h3>Total: <span id="totalPrice"></span></h3>
+        </div>
+
+        <button type="submit">Konfirmasi Pesanan</button>
+
+    </form>
+
+    <div id="successMessage" hidden>
+        <h2>Pesanan Berhasil!</h2>
+        <p>Terima kasih telah memilih Fresqo.</p>
+    </div>
+
+    <a href="index.html" class="back">
+        Kembali ke halaman utama
+    </a>
+
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+
+    const product = params.get("name") || "-";
+    const variant = params.get("variant") || "-";
+    const price = Number(params.get("price")) || 0;
+
+    document.getElementById("productName").textContent = product;
+    document.getElementById("productVariant").textContent = variant;
+
+    document.getElementById("unitPrice").textContent =
+        "Rp" + price.toLocaleString("id-ID");
+
+    const quantity = document.getElementById("quantity");
+    const totalPrice = document.getElementById("totalPrice");
+
+    function updateTotal() {
+        const qty = Math.max(1, Number(quantity.value) || 1);
+
+        totalPrice.textContent =
+            "Rp" + (price * qty).toLocaleString("id-ID");
+    }
+
+    quantity.addEventListener("input", updateTotal);
+    updateTotal();
+
+    document.getElementById("checkoutForm")
+        .addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            this.hidden = true;
+            document.getElementById("successMessage").hidden = false;
+        });
+</script>
+
+</body>
+</html>
+
+
